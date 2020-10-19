@@ -2,21 +2,21 @@
 #remember to change the pathway of file = "..." depend on different device
 
 #note that it is conserved sites of miRNA on Target Scan which was written by order, not download data
-temp <- read.csv(file = "C:/Users/↘/Documents/Lab/data/survival/KRAS/PAAD/temp.txt", header = F, sep = "\n", stringsAsFactor = F)
+temp <- read.csv(file = "C:/Users/陋么篓K漏没/Documents/Lab/data/survival/KRAS/PAAD/temp.txt", header = F, sep = "\n", stringsAsFactor = F)
 #clinical data download from TCGA
-clinical <- read.csv(file = "C:/Users/↘/Documents/Lab/data/survival/KRAS/PAAD/clinical.tsv", header = T, sep = "\t", stringsAsFactor = F)
+clinical <- read.csv(file = "C:/Users/陋么篓K漏没/Documents/Lab/data/survival/KRAS/PAAD/clinical.tsv", header = T, sep = "\t", stringsAsFactor = F)
 #98 miRNA from KRAS gene
 for(l in 1:98){
   miR <- temp[l, 1]
   #samplesheet download from TCGA
-  samplesheet <- read.csv(file = "C:/Users/↘/Documents/Lab/data/survival/KRAS/PAAD/gdc_sample_sheet.2020-09-11.tsv", header = T, sep = "\t", stringsAsFactor = F)
+  samplesheet <- read.csv(file = "C:/Users/陋么篓K漏没/Documents/Lab/data/survival/KRAS/PAAD/gdc_sample_sheet.2020-09-11.tsv", header = T, sep = "\t", stringsAsFactor = F)
   
   for(i in 1:260){ #cases from clinical raw data
     for(j in 1:135){ #cases from samplesheet
       if(i %% 2 == 1){ #clinical raw data repeat twice, thus divided by 2
         if(clinical[i, 2] == samplesheet[j, 6]){ #if find same caseID
           #get each cases' miRNA expression
-          mir <- read.csv(file = paste0("C:/Users/↘/Documents/Lab/data/survival/KRAS/PAAD/", samplesheet[j, 1], "/", samplesheet[j, 2]), header = T, sep = "\t")
+          mir <- read.csv(file = paste0("C:/Users/陋么篓K漏没/Documents/Lab/data/survival/KRAS/PAAD/", samplesheet[j, 1], "/", samplesheet[j, 2]), header = T, sep = "\t")
           #total of 1881 miRNA
           for(k in 1:1881){
             if(mir[k, 1] == miR){
@@ -63,10 +63,10 @@ for(l in 1:98){
     samplesheet[, 6] <- NULL
   }
   #output .csv
-  write.csv(samplesheet, file = paste0("C:/Users/↘/Documents/Lab/data/KRAS/PAAD/", miR, ".csv"))
+  write.csv(samplesheet, file = paste0("C:/Users/陋么篓K漏没/Documents/Lab/data/KRAS/PAAD/", miR, ".csv"))
   
   #read file
-  PAAD <- read.csv(file = paste0("C:/Users/↘/Documents/Lab/data/survival/KRAS/PAAD/", miR, ".csv"), stringsAsFactor = F)
+  PAAD <- read.csv(file = paste0("C:/Users/陋么篓K漏没/Documents/Lab/data/survival/KRAS/PAAD/", miR, ".csv"), stringsAsFactor = F)
   #removing useless column
   PAAD <- PAAD[, -1]
   #get the median of miRNA expression
@@ -91,7 +91,7 @@ for(l in 1:98){
   #to draw survival curve and view in plots
   ggsurvplot(fit, data = PAAD, xlim = c(0, 2300), xlab = "days to last follow up", pval = TRUE)
   output <- ggsurvplot(fit, data = PAAD, xlim = c(0, 2300), xlab = "days to last follow up", pval = TRUE, print = TRUE)
-  ggsave(filename = paste0("C:/Users/↘/Documents/Lab/data/KRAS/PAAD/PAAD_", miR, ".png"), plot = print(output), width = 5, height = 4)
+  ggsave(filename = paste0("C:/Users/陋么篓K漏没/Documents/Lab/data/KRAS/PAAD/PAAD_", miR, ".png"), plot = print(output), width = 5, height = 4)
 }
 
 #user interaction. Use while running specific miRNA, not all. Remember not to run miR <- temp[l, 1]
