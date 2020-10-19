@@ -1,7 +1,7 @@
 #read file
 #remember to change the pathway of file = "..." depend on different device
 
-#note that it is conserved sites of miRNA on Target Scan which was written by order, not download data
+#note that it is conserved sites of miRNA on Target Scan which was written by order, view temp(from GENE)
 temp <- read.csv(file = "C:/Users/ªô¨K©û/Documents/Lab/data/survival/KRAS/PAAD/temp.txt", header = F, sep = "\n", stringsAsFactor = F)
 #clinical data download from TCGA
 clinical <- read.csv(file = "C:/Users/ªô¨K©û/Documents/Lab/data/survival/KRAS/PAAD/clinical.tsv", header = T, sep = "\t", stringsAsFactor = F)
