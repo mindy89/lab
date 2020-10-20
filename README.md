@@ -14,4 +14,4 @@ Replace it with (KRAS, LUAD); (EGFR, LUAD); (EGFR, HNSC); (HER2, BRCA); (BRAF, S
 
 -For survival curve with significance:
 
-(BRAF, SKCM) has no significance in survival curve, thus skip.  
+(BRAF, SKCM) has no significance in survival curve, thus skip for control(without mutation) and scatter plot.  
