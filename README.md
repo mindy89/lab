@@ -12,6 +12,6 @@ KRAS stands for gene; PAAD stands for project.
   
 Replace it with (KRAS, LUAD); (EGFR, LUAD); (EGFR, HNSC); (HER2, BRCA); (BRAF, SKCM)...
 
--For survival without mutation.sample:
+-For survival curve with significance:
 
 (BRAF, SKCM) has no significance in survival curve, thus skip.  
