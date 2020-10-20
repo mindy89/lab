@@ -39,7 +39,7 @@ for(l in 1:120){
     }
   }
   
-  #if vital status = "0"|"--", delete that row
+  #if vital status = "0"|"'--", delete that row
   #note that if the situation occurred continuously, create another loop or repeat running the function
   #82 stands for the cases left. to get the exact number, simply run the fuction with 83 cases, the remain number can be observed in Environment Data(for Rstudio)
   for(i in 1:82){
