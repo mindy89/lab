@@ -41,7 +41,7 @@ for(l in 1:120){
   
   #if vital status = "0"|"--", delete that row
   #note that if the situation occurred continuously, create another loop or repeat running the function
-  #82 stands for the cases left
+  #82 stands for the cases left. to get the exact number, simply run the fuction with 83 cases, the remain number can be observed in environment(for Rstudio)
   for(i in 1:82){
     if(samplesheet[i, 3] == "0"){
       samplesheet <- samplesheet[-i, ]
@@ -82,12 +82,15 @@ for(l in 1:120){
   }
   #rename the name of column
   colnames(LUAD) <- c("ID", "file.name", "days_to_last_follow_up", "vital_status", miR, "expression")
+  
   #install package only for the first time using the lib
   #install.packages("ggplot2")
   #install.packages("survminer")
+  
   #include lib every time you reopen R
   library("survminer")
   require("survival")
+  
   fit <- survfit(Surv(LUAD$days_to_last_follow_up, LUAD$vital_status) ~ LUAD$expression)
   #to draw survival curve and view in plots
   #note that you might need to change data and xlim according to different miRNA/project
