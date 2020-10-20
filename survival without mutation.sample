@@ -114,6 +114,7 @@ for(l in 1:120){
   #to draw survival curve and view in plots
   #note that you might need to change data and xlim according to different miRNA/project
   ggsurvplot(fit, data = LUAD, xlim = c(0, 5000), xlab = "days to last follow up", pval = TRUE)
+  #output survival curve
   output <- ggsurvplot(fit, data = LUAD, xlim = c(0, 5000), xlab = "days to last follow up", pval = TRUE, print = TRUE)
   ggsave(filename = paste0("C:/Users/邱沛昀/Documents/Lab/data/LUAD/LUAD-EGFR/LUAD-EGFR_", miR, ".png"), plot = print(output), width = 5, height = 4)
 }
