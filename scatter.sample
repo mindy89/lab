@@ -1,0 +1,150 @@
+#remember to change the pathway of file = "..." depend on different device
+
+#samplesheet(RNA) download from TCGA
+samplesheet_RNA <- read.csv(file = "C:/Users/邱沛昀/Documents/Lab/data/scatter/EGFR/LUAD/gdc_sample_sheet.2020-10-12.tsv", header = T, sep = "\t", stringsAsFactor = F)
+#install package and include lib only for the first time using the lib
+install.packages("R.utils")
+library(R.utils)
+#unzip the file
+for(i in 1:153){
+  RNA <- read.csv(gzfile(paste0("C:/Users/邱沛昀/Documents/Lab/data/scatter/EGFR/LUAD/", samplesheet_RNA[i, 1], "/", samplesheet_RNA[i, 2])), header = F, sep = "\t", stringsAsFactor = F)
+  #EGFR(ENSG00000146648.19) -> search in RNA -> row 19791
+  samplesheet_RNA[i, 9] <- RNA[19791, 2]
+}
+
+
+#example: hsa-mir-16-1
+miR <- "hsa-mir-16-1"
+#data from survival.sample
+samplesheet_miR <- read.csv(file = paste0("C:/Users/邱沛昀/Documents/Lab/data/survival/EGFR/new_LUAD/", miR, ".csv"))
+#removing useless column
+samplesheet_miR <- samplesheet_miR[ , -1]
+
+for(i in 1:129){ #cases from samplesheet_miR
+  for(j in 1:153){ #cases from samplesheet_RNA
+    if(samplesheet_miR[i, 1] == samplesheet_RNA[j, 6]){ #if find same caseID
+      #get each cases' RNA expression
+      samplesheet_miR[i, 6] <- samplesheet_RNA[j, 9]
+    }
+  }
+}
+
+#to get the exact number, simply run the fuction with 129 cases, the remain number can be observed in Environment Data(for Rstudio)
+for(i in 1:128){
+  if(is.na(samplesheet_miR[i, 6])){ #if mutations data is NA, delete that row
+    samplesheet_miR <- samplesheet_miR[-i, ]
+  }
+}
+
+#counting loop for outlier deletion
+#samplesheet_miR[ ,5] for miRNA expression
+#samplesheet_miR[ ,6] for RNA expression
+count <- 0
+for(i in 1:128){
+  if(samplesheet_miR[i, 6] == max(samplesheet_miR[, 6])){
+    count <- i
+  }
+}
+count
+
+#delete the row found by the counting loop above
+samplesheet_miR <- samplesheet_miR[-92, ]
+samplesheet_miR <- samplesheet_miR[-16, ]
+samplesheet_miR <- samplesheet_miR[-125, ]
+samplesheet_miR <- samplesheet_miR[-50, ]
+#rename the name of column
+colnames(samplesheet_miR) <- c("ID", "file.name", "days_to_last_follow_up", "vital_status", miR, "EGFR")
+#output .csv
+write.csv(samplesheet_miR, file = paste0("C:/Users/邱沛昀/Documents/Lab/data/scatter/EGFR/LUAD/", miR, ".csv"))
+
+#set x, y for scatter plot axis
+x <- samplesheet_miR$`hsa-mir-16-1`
+y <- samplesheet_miR$EGFR
+#include lib every time you reopen R
+library("ggpubr")
+#to draw scatter plot and view in plots
+#note that you might need to change main and label.x according to different miRNA/project
+ggscatter(samplesheet_miR, main = paste0("EGFR_LUAD_", miR), x = miR, y = "EGFR", add = "reg.line", add.params = list(color = "blue")) + stat_cor(method = "pearson", p.accuracy = 0.001, r.accuracy = 0.001, label.x = 30)
+#output scatter plot
+scatter <- ggscatter(samplesheet_miR, main = paste0("EGFR_LUAD_", miR), x = miR, y = "EGFR", add = "reg.line", add.params = list(color = "blue")) + stat_cor(method = "pearson", p.accuracy = 0.001, r.accuracy = 0.001, label.x = 3000)
+ggsave(filename = paste0("C:/Users/邱沛昀/Documents/Lab/data/scatter/EGFR/LUAD/EGFR_LUAD_", miR, ".png"), plot = print(scatter), width = 5, height = 4)
+
+
+#hsa-mir-142
+miR <- "hsa-mir-142"
+samplesheet_miR <- read.csv(file = paste0("C:/Users/邱沛昀/Documents/Lab/data/survival/EGFR/new_LUAD/", miR, ".csv"))
+samplesheet_miR <- samplesheet_miR[ , -1]
+for(i in 1:129){
+  for(j in 1:153){
+    if(samplesheet_miR[i, 1] == samplesheet_RNA[j, 6]){
+      samplesheet_miR[i, 6] <- samplesheet_RNA[j, 9]
+    }
+  }
+}
+for(i in 1:128){
+  if(is.na(samplesheet_miR[i, 6])){
+    samplesheet_miR <- samplesheet_miR[-i, ]
+  }
+}
+samplesheet_miR <- samplesheet_miR[-92, ]
+samplesheet_miR <- samplesheet_miR[-16, ]
+samplesheet_miR <- samplesheet_miR[-125, ]
+samplesheet_miR <- samplesheet_miR[-50, ]
+colnames(samplesheet_miR) <- c("ID", "file.name", "days_to_last_follow_up", "vital_status", miR, "EGFR")
+write.csv(samplesheet_miR, file = paste0("C:/Users/邱沛昀/Documents/Lab/data/scatter/EGFR/LUAD/", miR, ".csv"))
+
+x <- samplesheet_miR$`hsa-mir-142`
+y <- samplesheet_miR$EGFR
+ggscatter(samplesheet_miR, main = paste0("EGFR_LUAD_", miR), x = miR, y = "EGFR", add = "reg.line", add.params = list(color = "blue")) + stat_cor(method = "pearson", p.accuracy = 0.001, r.accuracy = 0.001)
+scatter <- ggscatter(samplesheet_miR, main = paste0("EGFR_LUAD_", miR), x = miR, y = "EGFR", add = "reg.line", add.params = list(color = "blue")) + stat_cor(method = "pearson", p.accuracy = 0.001, r.accuracy = 0.001, label.x = 40000)
+ggsave(filename = paste0("C:/Users/邱沛昀/Documents/Lab/data/scatter/EGFR/LUAD/EGFR_LUAD_", miR, ".png"), plot = print(scatter), width = 5, height = 4)
+
+
+#hsa-mir-143
+miR <- "hsa-mir-143"
+samplesheet_miR <- read.csv(file = paste0("C:/Users/邱沛昀/Documents/Lab/data/survival/EGFR/new_LUAD/", miR, ".csv"))
+samplesheet_miR <- samplesheet_miR[ , -1]
+
+for(i in 1:129){
+  for(j in 1:153){
+    if(samplesheet_miR[i, 1] == samplesheet_RNA[j, 6]){
+      samplesheet_miR[i, 6] <- samplesheet_RNA[j, 9]
+    }
+  }
+}
+
+for(i in 1:128){
+  if(is.na(samplesheet_miR[i, 6])){
+    samplesheet_miR <- samplesheet_miR[-i, ]
+  }
+}
+
+count <- 0
+for(i in 1:124){
+  if(samplesheet_miR[i, 5] == max(samplesheet_miR[, 5])){
+    count <- i
+  }
+}
+count
+
+samplesheet_miR <- samplesheet_miR[-92, ]
+samplesheet_miR <- samplesheet_miR[-16, ]
+samplesheet_miR <- samplesheet_miR[-125, ]
+samplesheet_miR <- samplesheet_miR[-50, ]
+samplesheet_miR <- samplesheet_miR[-120, ]
+
+colnames(samplesheet_miR) <- c("ID", "file.name", "days_to_last_follow_up", "vital_status", miR, "EGFR")
+write.csv(samplesheet_miR, file = paste0("C:/Users/邱沛昀/Documents/Lab/data/scatter/EGFR/LUAD/", miR, ".csv"))
+
+x <- samplesheet_miR$`hsa-mir-143`
+y <- samplesheet_miR$EGFR
+#xscale("log10") -> log for x axis
+ggscatter(samplesheet_miR, main = paste0("EGFR_LUAD_", miR), x = miR, y = "EGFR", add = "reg.line", add.params = list(color = "blue")) + stat_cor(method = "pearson", p.accuracy = 0.001, r.accuracy = 0.001) + xscale("log10")
+#note that label.x of log depends on log(miRNA expression)
+scatter <- ggscatter(samplesheet_miR, main = paste0("EGFR_LUAD_", miR), x = miR, y = "EGFR", add = "reg.line", add.params = list(color = "blue")) + stat_cor(method = "pearson", p.accuracy = 0.001, r.accuracy = 0.001, label.x = 5.5) + xscale("log10")
+ggsave(filename = paste0("C:/Users/邱沛昀/Documents/Lab/data/scatter/EGFR/LUAD/EGFR_LUAD_", miR, ".png"), plot = print(scatter), width = 5, height = 4)
+
+
+#KRAS(ENSG00000133703.13) -> search in RNA -> row 31588
+#EGFR(ENSG00000146648.19) -> search in RNA -> row 19791
+#HER2(ENSG00000141736.13) -> search in RNA -> row 59002
