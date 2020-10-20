@@ -107,7 +107,7 @@ for(l in 1:120){
   }
   #rename the name of column
   colnames(LUAD) <- c("ID", "file.name", "days_to_last_follow_up", "vital_status", miR, "expression")
-  #include lib
+  #include lib every time you reopen R
   library("survminer")
   require("survival")
   fit <- survfit(Surv(LUAD$days_to_last_follow_up, LUAD$vital_status) ~ LUAD$expression)
