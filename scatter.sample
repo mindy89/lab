@@ -148,3 +148,4 @@ ggsave(filename = paste0("C:/Users/邱沛昀/Documents/Lab/data/scatter/EGFR/LUA
 #KRAS(ENSG00000133703.13) -> search in RNA -> row 31588
 #EGFR(ENSG00000146648.19) -> search in RNA -> row 19791
 #HER2(ENSG00000141736.13) -> search in RNA -> row 59002
+#MET(ENSG00000105976.15) -> search in RNA -> row 34873
