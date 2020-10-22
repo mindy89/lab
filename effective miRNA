@@ -1,4 +1,4 @@
-#if p-value < 0.05, marked with "*"
+#if survival curve p-value < 0.05, marked with "*"
 
 #KRAS_LUAD(8 miRNA with significance)
 hsa-mir-30a
